@@ -37,6 +37,7 @@ use pythonbase;
 # create the table to store the posts
 create table Post ( 
     id int NOT NULL AUTO_INCREMENT,
+    uniqueId CHAR(36) NOT NULL DEFAULT (UUID()),
     title varchar(255),
     author varchar(255),
     date datetime,
