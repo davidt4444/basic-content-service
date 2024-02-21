@@ -83,5 +83,14 @@ python3 -m uvicorn production:app --reload --port $PORT --host 0.0.0.0
 
 python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+5-key.pem --ssl-certfile=./localhost+5.pem --host 0.0.0.0
 
-Generate locally signed certs
+Generate locally signed certs(look in aws-resources)
 mkcert localhost 127.0.0.1 ::1 
+
+To run it in the background run:
+
+screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+5-key.pem --ssl-certfile=./localhost+5.pem --host 0.0.0.0
+
+To reattach and manage the screen run:
+screen -R
+
+
