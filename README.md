@@ -81,10 +81,13 @@ production.py is an example of what is running in production. The example comman
 
 python3 -m uvicorn production:app --reload --port $PORT --host 0.0.0.0
 
-python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+5-key.pem --ssl-certfile=./localhost+5.pem --host 0.0.0.0
+python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+3-key.pem --ssl-certfile=./localhost+3.pem --host 0.0.0.0
 
 Generate locally signed certs(look in aws-resources)
-mkcert localhost 127.0.0.1 ::1 
+mkcert localhost 127.0.0.1 ::1 $SERVICEDOMAIN $SERVICEIPADDRESS
+mkcert localhost 127.0.0.1 ::1 bcs.thenameofyourbrand.com
+Test it at 
+https://www.ssllabs.com/ssltest/analyze.html
 
 To run it in the background run:
 
@@ -92,6 +95,9 @@ screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --port
 
 To reattach and manage the screen run:
 screen -R
+
+Docs:
+https://stackoverflow.com/questions/8164664/running-a-command-as-a-background-process-service
 
 For logging 
 https://stackoverflow.com/questions/60715275/fastapi-logging-to-file
@@ -108,6 +114,11 @@ Stop the instance first to Add this
 <script>
 screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+5-key.pem --ssl-certfile=./localhost+5.pem --host 0.0.0.0
 </script>
+
+Debugging on android phones
+https://www.boxuk.com/insight/remote-debugging-websites-on-mobile-devices/
+settings->system->developer options->usb debugging
+
 
 
 location ip data for analytics
