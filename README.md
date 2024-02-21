@@ -93,4 +93,13 @@ screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --relo
 To reattach and manage the screen run:
 screen -R
 
+To setup relaunch on reboot
+https://repost.aws/knowledge-center/ec2-windows-run-command-new
+->
+https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/ec2-windows-user-data.html#user-data-scripts
 
+Actions->Instance Settings->edit User Data
+Stop the instance first to Add this
+<script>
+screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+5-key.pem --ssl-certfile=./localhost+5.pem --host 0.0.0.0
+</script>
