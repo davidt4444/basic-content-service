@@ -88,7 +88,7 @@ mkcert localhost 127.0.0.1 ::1
 
 To run it in the background run:
 
-screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+5-key.pem --ssl-certfile=./localhost+5.pem --host 0.0.0.0 --log-config ./log.ini
+screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --port 8080 --ssl-keyfile=./localhost+5-key.pem --ssl-certfile=./localhost+5.pem --host 0.0.0.0 --log-config ./log.ini
 
 To reattach and manage the screen run:
 screen -R
@@ -108,3 +108,8 @@ Stop the instance first to Add this
 <script>
 screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+5-key.pem --ssl-certfile=./localhost+5.pem --host 0.0.0.0
 </script>
+
+
+location ip data for analytics
+<a href='https://db-ip.com'>IP Geolocation by DB-IP</a>
+https://db-ip.com/db/download/ip-to-city-lite
