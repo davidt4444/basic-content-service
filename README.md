@@ -60,3 +60,21 @@ After you have done all of the stuff above, you can run the following command to
 
 python3 -m uvicorn main:app --reload
 
+For the front end, BasicContentService.js is the code for the front end and the view.html file is an example of how to build out the view on your website. You will obviously want to put a skin on it and move the contents of that file inside the element that you will use to hold the blog. You will also need to move over the style elements to the local styles.css file for your website.
+
+For the back end, I didn't build out security for this. 
+
+I use the adminView.html on my local laptop with the mysql instance port forwarded into the laptop with basic-content-service running on my laptop.
+
+For the production outward facing service on an ec2, you will want to modify the origins in the python code for security with only the address of your front end in the origins array. For more information on that go to https://fastapi.tiangolo.com/tutorial/cors/.
+
+Also, for production, there are some things that should be changed in add_middleware in the python code. 
+
+Since there isn't an auth setup in place, you will not need cookies, so set allow_credentials=false. You are going to want to change allow methods to allow_methods=["GET"]. Although, you should be able to comment it out for this default behavior. 
+
+You also should be able to comment out allow_headers for default behavior. Accept, Accept-Language, Content-Language and Content-Type should still be allowed in that case.
+
+production.py is an example of what is running in production. The example command below allows you to set a different port than 8000. Just change the $PORT variable to the desired port.
+
+python3 -m uvicorn production:app --reload --port $PORT
+

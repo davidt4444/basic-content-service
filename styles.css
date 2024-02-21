@@ -1,0 +1,46 @@
+.content{
+    width:60%;
+}
+.mainContent{
+    width:60%;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+.postListViewEntry{
+    list-style: none;
+    
+}
+.postDate{
+    padding-bottom:10px;
+    
+}
+.postShowHideButton
+{
+    width:200px;
+    margin-top:30px;
+    padding:10px;
+}
+.postCreateButton
+{
+    width:200px;
+    margin-top:30px;
+    padding:10px;
+}
+.postListViewEntry textarea{
+    width:80%;
+    height:300px;
+}
+.postListViewEntry input{
+    width:50em;
+}
+.postModify{
+    list-style: none;
+    display:inline-block;
+    width: 50px;
+    height:1.5em;
+    border-right-style: dotted;
+    border-right-width:1px;
+    margin:5px;
+}

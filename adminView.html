@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="styles.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="./BasicContentService.js"></script>
+<div id="result_title" class="result_title"></div>
+<div id="result" class="result"></div>
+<div id="resultXml" class="resultXml"></div>
+<div id="previous" class="previous" onclick="bcs.previousPage()"><h1>&lt;- Previous</h1></div>
+<div id="next" class="next" onclick="bcs.nextPage()"><h1>Next -&gt;</h1></div>
+<button id="postCreateButton" class="postCreateButton" onclick="bcs.createPage()">Create New Post</button>
+<div id="postListView" class="postListView"></div>
+<script>
+    let bcs = {};
+    // The service call without the content is just achieved by adding /trim
+    // If you don't care about the data load, just use the regular function call
+    $.getJSON('http://127.0.0.1:8000/posts/trim', function(ret) {
+        bcs = new BasicContentService(ret, true);
+    });
+
+</script>
