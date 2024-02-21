@@ -88,10 +88,15 @@ mkcert localhost 127.0.0.1 ::1
 
 To run it in the background run:
 
-screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+5-key.pem --ssl-certfile=./localhost+5.pem --host 0.0.0.0
+screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+5-key.pem --ssl-certfile=./localhost+5.pem --host 0.0.0.0 --log-config ./log.ini
 
 To reattach and manage the screen run:
 screen -R
+
+For logging 
+https://stackoverflow.com/questions/60715275/fastapi-logging-to-file
+https://gist.github.com/liviaerxin/d320e33cbcddcc5df76dd92948e5be3b
+
 
 To setup relaunch on reboot
 https://repost.aws/knowledge-center/ec2-windows-run-command-new
