@@ -81,6 +81,7 @@ production.py is an example of what is running in production. The example comman
 
 python3 -m uvicorn production:app --reload --port $PORT --host 0.0.0.0
 
-python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+2-key.pem --ssl-certfile=./localhost+2.pem --host 0.0.0.0
+python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+5-key.pem --ssl-certfile=./localhost+5.pem --host 0.0.0.0
 
-
+Generate locally signed certs
+mkcert localhost 127.0.0.1 ::1 
