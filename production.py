@@ -23,8 +23,8 @@ class BlogPost(BaseModel):
     date:str
     content:str
 
-# cnf_filepath="../aws-resources/localhost.cnf"
-cnf_filepath="../aws-resources/thenameofyourbrand.cnf"
+cnf_filepath="../aws-resources/localhost.cnf"
+# cnf_filepath="../aws-resources/thenameofyourbrand.cnf"
 # cnf_filepath='example.cnf'
 
 origins = [
