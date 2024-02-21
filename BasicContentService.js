@@ -2,11 +2,13 @@ class BasicContentService{
     admin=false;
     currentPage=0;
     data = [];
-    constructor(data, admin=false)
+    server = "";
+    constructor(data, server, admin=false)
     {
         this.admin=admin;
         this.currentPage=0;
         this.data = data;
+        this.server = server;
         document.getElementById("resultXml").style.display="none";
         this.initialize();
 
@@ -62,7 +64,7 @@ class BasicContentService{
             var delId = this.data[pageNum].id;
             var guid = this.data[pageNum].uniqueId;
             $.ajax({
-                url: 'http://127.0.0.1:8000/post/'+delId,
+                url: this.server+'/post/'+delId,
                 type: 'DELETE',
                 success: function(result) {
                     console.log(result);
@@ -84,7 +86,7 @@ class BasicContentService{
         }
         console.log(payload);
         $.ajax({
-            url: 'http://127.0.0.1:8000/post/',
+            url: this.server+'/post/',
             type: 'PATCH',
             data: JSON.stringify(payload),
             // processData: false,
@@ -108,7 +110,7 @@ class BasicContentService{
         }
         console.log(payload);
         $.ajax({
-            url: 'http://127.0.0.1:8000/post/',
+            url: this.server+'/post/',
             type: 'POST',
             data: JSON.stringify(payload),
             // processData: false,
@@ -192,7 +194,7 @@ class BasicContentService{
         document.getElementById("result_title").appendChild(header);    
         
                     
-        $.getJSON('http://127.0.0.1:8000/post/'+this.data[pageNum].uniqueId, function(ret) {
+        $.getJSON(this.server+'/post/'+this.data[pageNum].uniqueId, function(ret) {
             document.getElementById("result").innerHTML="";
             var container = document.createElement("ul");
             var holder = document.createElement("li");
@@ -283,7 +285,7 @@ class BasicContentService{
             holder.appendChild(document.createTextNode("Date: "+this.data[this.currentPage].date));
             document.getElementById("result_title").appendChild(holder);
             
-            $.getJSON('http://127.0.0.1:8000/post/'+this.data[this.currentPage].uniqueId, function(ret) {
+            $.getJSON(this.server+'/post/'+this.data[this.currentPage].uniqueId, function(ret) {
                 var preContainer = document.createElement("xmp");
                 preContainer.innerHTML=ret.content;
                 document.getElementById("resultXml").innerHTML="";

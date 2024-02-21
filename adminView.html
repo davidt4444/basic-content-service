@@ -13,7 +13,7 @@
     // The service call without the content is just achieved by adding /trim
     // If you don't care about the data load, just use the regular function call
     $.getJSON('http://127.0.0.1:8000/posts/trim', function(ret) {
-        bcs = new BasicContentService(ret, true);
+        bcs = new BasicContentService(ret, 'http://127.0.0.1:8000', true);
     });
 
 </script>
