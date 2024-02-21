@@ -4,12 +4,14 @@ This is a basic python web service using FastApi
 
 To setup the environment locally, run the following commands on your ec2.
 
+sudo dnf install git
 sudo dnf install python3 python3-pip
 pip install fastapi
 pip install "uvicorn[standard]"
 pip install requests
 pip install python-multipart
 pip install mysql-connector-python
+git clone https://github.com/davidt4444/basic-content-service.git
 
 
 If you don't have a database setup, then run the following to setup a mariadb on an aws ec2.
@@ -76,5 +78,8 @@ You also should be able to comment out allow_headers for default behavior. Accep
 
 production.py is an example of what is running in production. The example command below allows you to set a different port than 8000. Just change the $PORT variable to the desired port.
 
-python3 -m uvicorn production:app --reload --port $PORT
+python3 -m uvicorn production:app --reload --port $PORT --host 0.0.0.0
+
+python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+2-key.pem --ssl-certfile=./localhost+2.pem --host 0.0.0.0
+
 
