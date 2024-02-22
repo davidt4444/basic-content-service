@@ -313,12 +313,18 @@ class BasicContentService{
     initialize()
     {
         var guid = this.getPathVariable("uniqueId");
+        var unset = true;
         for(var i=0;i<this.data.length;i++)
         {
             if(this.data[i].uniqueId===guid)
             {
                 this.currentPage=i;
+                unset=false;
             }
+        }
+        if(unset && this.data.length>0)
+        {
+            this.currentPage=this.data.length-1;
         }
         var collection = document.createElement("ul");
         var item = document.createElement("li");
