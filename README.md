@@ -81,17 +81,45 @@ production.py is an example of what is running in production. The example comman
 
 python3 -m uvicorn production:app --reload --port $PORT --host 0.0.0.0
 
-python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+3-key.pem --ssl-certfile=./localhost+3.pem --host 0.0.0.0
 
-Generate locally signed certs(look in aws-resources)
+To run this off of a browser from a file served on an https website you are going to need to run this in ssl.
+python3 -m uvicorn production:app --reload --port $PORT --ssl-keyfile=./localhost+3-key.pem --ssl-certfile=./localhost+3.pem --host 0.0.0.0
+
+For test environments running on desktops you can generate locally signed certs (look in aws-resources). These will not work on mobile devices (There will be a section explaining this on the www.thenameofyourbrand.com).
 mkcert localhost 127.0.0.1 ::1 $SERVICEDOMAIN $SERVICEIPADDRESS
-mkcert localhost 127.0.0.1 ::1 bcs.thenameofyourbrand.com
-Test it at 
+
+You can verify this by following the following steps for debugging on android phones or just watch it not work on your own phone.
+https://www.boxuk.com/insight/remote-debugging-websites-on-mobile-devices/
+settings->system->developer options->usb debugging
+
+So, to generate the public ca certs you need to run on mobile devices,
+Make sure to open port 80 (HTTP) and 443 (HTTPS) in inbound rules for your ec2
+
+On the ec2 run 
+sudo yum install certbot
+sudo certbot certonly --standalone
+# output
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/bcs.thenameofyourbrand.com/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/bcs.thenameofyourbrand.com/privkey.pem
+This certificate expires on 2024-05-21.
+These files will be updated when the certificate renews.
+Certbot has set up a scheduled task to automatically renew this certificate in the background.
+
+# It will update the cert at Those locations, so you will need to repeat the following step every 3 months. I do this because you don't own the file produced by the program, and I don't like running the service as root
+sudo cp /etc/letsencrypt/live/bcs.thenameofyourbrand.com/fullchain.pem ./
+sudo cp /etc/letsencrypt/live/bcs.thenameofyourbrand.com/privkey.pem ./
+sudo chown ec2-user fullchain.pem
+sudo chown ec2-user privkey.pem
+
+python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./privkey.pem --ssl-certfile=./fullchain.pem --host 0.0.0.0
+
+You can test them at  
 https://www.ssllabs.com/ssltest/analyze.html
 
 To run it in the background run:
 
-screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --port 8080 --ssl-keyfile=./localhost+5-key.pem --ssl-certfile=./localhost+5.pem --host 0.0.0.0 --log-config ./log.ini
+screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --port 8080 --ssl-keyfile=./privkey.pem --ssl-certfile=./fullchain.pem --host 0.0.0.0 --log-config ./log.ini
 
 To reattach and manage the screen run:
 screen -R
@@ -104,7 +132,7 @@ https://stackoverflow.com/questions/60715275/fastapi-logging-to-file
 https://gist.github.com/liviaerxin/d320e33cbcddcc5df76dd92948e5be3b
 
 
-To setup relaunch on reboot
+This did not behave well for me, but to setup relaunch on reboot
 https://repost.aws/knowledge-center/ec2-windows-run-command-new
 ->
 https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/ec2-windows-user-data.html#user-data-scripts
@@ -115,12 +143,6 @@ Stop the instance first to Add this
 screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --reload --port 8080 --ssl-keyfile=./localhost+5-key.pem --ssl-certfile=./localhost+5.pem --host 0.0.0.0
 </script>
 
-Debugging on android phones
-https://www.boxuk.com/insight/remote-debugging-websites-on-mobile-devices/
-settings->system->developer options->usb debugging
-
-
-
-location ip data for analytics
+Depending on how into analytics about your viewers, you can get the ip location info from the link below and join it against data in you logs for some early insights into your viewers.It is like caller id for your phone.
 <a href='https://db-ip.com'>IP Geolocation by DB-IP</a>
 https://db-ip.com/db/download/ip-to-city-lite
