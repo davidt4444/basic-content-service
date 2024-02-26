@@ -194,3 +194,4 @@ Depending on how into analytics about your viewers, you can get the ip location 
 <a href='https://db-ip.com'>IP Geolocation by DB-IP</a><br />
 https://db-ip.com/db/download/ip-to-city-lite<br />
 </p>
+<p>For individual ip addresses, I use https://ipinfo.io/$IP where I put the ip address where the $IP variable is.</>
