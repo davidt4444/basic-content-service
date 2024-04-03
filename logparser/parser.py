@@ -262,6 +262,7 @@ def getPostByUniqueId(uniqueId:str):
     return {"response":"No result found"}
 
 def main():
+    truncatePostLogTable()
     myfile = "temp.log"
     with os.scandir("../../aws-resources/thenameofyourbrand") as entries:
         for entry in entries:
@@ -284,6 +285,7 @@ def main():
                         result.message=result.ipaddress
                         result.ipaddress=""
                     else:
+                        result.ipaddress = re.sub(r"(([0-9]{1,3}[.]){3}[0-9]{1,3})([:][0-9]{1,5})", r"\1", row['%(ipaddress)s'])
                         result.message = row['%(message)s']
                     insertIntoPostLogTable(result)
     os.remove(myfile)
