@@ -36,51 +36,6 @@ SELECT id, uniqueId, title, author, date, content FROM Post;
 
 delete from Post where id=987;
 
-/*
-PostLog
-%(asctime)s|%(name)s|%(levelname)s|%(message)s
-asctime,name,levelname,message
-*/
-create table PostLog ( 
-    id int NOT NULL AUTO_INCREMENT,
-    uniqueId CHAR(36) NOT NULL DEFAULT (UUID()),
-    asctime varchar(255),
-    name varchar(255),
-    levelname varchar(255),
-    ipaddress varchar(255),
-    message varchar(255),
-    PRIMARY KEY (id)
-);
-drop table PostLog;
-truncate table PostLog;
-
-insert into PostLog( 
-        asctime,
-        name,
-        levelname,
-        ipaddress,
-        message
-    )
-values( 
-        "2024-03-17 01:10:34,152",
-        "uvicorn.error",
-        "INFO",
-        "127.0.0.1:8000",
-        "Started server process [889080]"
-    );
-update PostLog set 
-        asctime="2024-03-17 01:10:34,152",
-        name="uvicorn.error",
-        levelname="INFO",
-        ipaddress="127.0.0.1:8000",
-        message="Started server process [889080]"
-    where id=11
-;
-
-SELECT id, uniqueId, asctime, name, levelname, ipaddress, message FROM PostLog;
-
-delete from PostLog where id=987;
-
 
 
 

@@ -196,22 +196,3 @@ https://db-ip.com/db/download/ip-to-city-lite<br />
 </p>
 <p>For individual ip addresses, I use https://ipinfo.io/$IP where I put the ip address where the $IP variable is.</>
 
-# #########################
-# ######logparser##########
-# #########################
-logfile.log is a cleansed version of the logs
-
-# to cleanse the logs use this regex to find the ip and port
-([0-9]{1,3}[.]){3}[0-9]{1,3}[:][0-9]{1,5}
-# use this as the replacement value
-127.0.0.1:8000
-
-# the program adds the log ini format string to the first line
-%(asctime)s - %(name)s - %(levelname)s - %(ipaddress)s - %(message)s
-# The program changes out the delimiter 
-" - "
-# and uses this as the replacement value
-"|"
-
-
-
