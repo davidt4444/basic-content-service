@@ -462,7 +462,7 @@ class BasicContentService{
             var holder = document.createElement("div");
             holder.innerHTML = data[i].content;
             var holderInnerText = holder.innerText.substring(0,
-                this.getPosition(holder.innerText, ".", 3))+"";
+                this.getPosition(holder.innerText, ".", 2))+"";
             
             element = document.createElement("description");
             element.appendChild(document.createTextNode(holderInnerText));
