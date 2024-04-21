@@ -395,4 +395,101 @@ class BasicContentService{
         // JSON result in `data` variable
 
     }
+    static rss(data){
+        var site = "https://www.thenameofyourbrand.com/";
+        var base = site+"blog.html";
+        var rss_link = site+"rss.html";
+        var collection = document.createElement("channel");
+        var element = document.createElement("title");
+        element.appendChild(document.createTextNode("The Name of Your Brand"));
+        collection.appendChild(element);
+        
+        element = document.createElementNS("http://search.yahoo.com/mrss/", "link");
+        element.appendChild(document.createTextNode(""+base));
+        collection.appendChild(element);
+        
+        element = document.createElement("atom:link");
+        element.setAttribute("href", rss_link);
+        element.setAttribute("rel", "self");
+        element.setAttribute("type", "application/rss+xml");
+        collection.appendChild(element);
+        
+        element = document.createElement("description");
+        element.appendChild(document.createTextNode("The blog for The Name of Your Brand"));
+        collection.appendChild(element);
+        
+        element = document.createElement("language");
+        element.appendChild(document.createTextNode("en-us"));
+        collection.appendChild(element);
+        var date = new Date();
+        
+        element = document.createElement("copyright");
+        element.appendChild(document.createTextNode("Copyright "+date.getFullYear()+" Thigpen Media Group LLC"));
+        collection.appendChild(element);
+        
+        element = document.createElement("lastBuildDate");
+        element.appendChild(document.createTextNode(date.toLocaleString()));
+        collection.appendChild(element);
+        
+        element = document.createElementNS("http://search.yahoo.com/mrss/", "pubDate");
+        element.appendChild(document.createTextNode(date.toLocaleString()));
+        collection.appendChild(element);
+        
+        for(var i=0;i<data.length;i++)
+        {
+            var item = document.createElement("item");
+            element = document.createElementNS("http://search.yahoo.com/mrss/", "link");
+            element.appendChild(document.createTextNode(base+"?uniqueId="+data[i].uniqueId));
+            item.appendChild(element);
+            
+            element = document.createElement("atom:link");
+            element.setAttribute("href", base+"?uniqueId="+data[i].uniqueId);
+            element.setAttribute("rel", "standout");
+            item.appendChild(element);
+            
+            element = document.createElement("guid");
+            element.setAttribute("isPermaLink", "true");
+            element.appendChild(document.createTextNode(base+"?uniqueId="+data[i].uniqueId));
+            item.appendChild(element);
+            
+            element = document.createElement("title");
+            if(i==0){
+                element.appendChild(document.createTextNode("Introduction: "+data[i].title));
+            }
+            else{
+                element.appendChild(document.createTextNode("Page"+(i)+": "+data[i].title));
+            }
+            item.appendChild(element);
+            
+            element = document.createElement("description");
+            element.appendChild(document.createTextNode(data[i].content));
+            item.appendChild(element);
+            
+            element = document.createElement("dc:creator");
+            element.appendChild(document.createTextNode(data[i].author));
+            item.appendChild(element);
+            
+            element = document.createElement("content:encoded");
+            element.appendChild(document.createTextNode(data[i].content));
+            item.appendChild(element);
+            
+            element = document.createElementNS("http://search.yahoo.com/mrss/", "pubDate");
+            element.appendChild(document.createTextNode(data[i].date));
+            item.appendChild(element);
+            
+            collection.appendChild(item);
+        }
+        var rss = document.createElement("rss");
+        rss.setAttribute("xmlns:dc", "http://purl.org/dc/elements/1.1/");
+        rss.setAttribute("xmlns:media", "http://search.yahoo.com/mrss/");
+        rss.setAttribute("xmlns:atom", "http://www.w3.org/2005/Atom");
+        rss.setAttribute("xmlns:content", "http://purl.org/rss/1.0/modules/content/");
+        rss.setAttribute("version", "2.0");
+        rss.appendChild(collection);
+        var pre = document.createElement("pre");
+        // pre.appendChild(rss);
+        pre.appendChild(document.createTextNode(rss.outerHTML));
+        document.getElementById("feed").appendChild(pre);
+        
+    }
 }

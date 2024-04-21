@@ -32,6 +32,8 @@ cnf_filepath="../aws-resources/thenameofyourbrand.cnf"
 origins = [
     "http://localhost",
     "https://localhost",
+    "http://localhost:8000",
+    "https://localhost:8000",
     "null",
 ]
 

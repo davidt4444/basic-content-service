@@ -30,7 +30,6 @@ cnf_filepath="../aws-resources/localhost.cnf"
 origins = [
     "https://thenameofyourbrand.com",
     "https://www.thenameofyourbrand.com",
-    "null",
 ]
 
 app.add_middleware(
