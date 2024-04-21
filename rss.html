@@ -2,7 +2,7 @@
 <script src="./BasicContentService.js"></script>
 <div id="feed" class="feed" ></div>
 <script>
-    $.getJSON('http://127.0.0.1:8000/posts', function(ret) {
+    $.getJSON('http://127.0.0.1:8000/posts/count/20', function(ret) {
         BasicContentService.rss(ret);
         console.log(ret);
     });

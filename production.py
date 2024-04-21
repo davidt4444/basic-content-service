@@ -62,6 +62,30 @@ def selectAllFromPostTable():
     except Error as err:
         print('Error message: ' + err.msg)
 
+def selectTopNFromPostTable(num:int):
+    try:
+        conn = connect(option_files =
+        cnf_filepath)
+        
+        # open cursor, define and run query, fetch results
+        cursor = conn.cursor()
+        query = 'SELECT id, uniqueId, title, author, date, content FROM Post order by id desc limit %s;'
+        cursor.execute(query, (num,))
+        result = cursor.fetchall()
+        
+        return_list = []
+        for r in result:
+            value = BlogPost(id=r[0], uniqueId=r[1], title=r[2], author=r[3], date=r[4].strftime("%m/%d/%Y, %H:%M:%S"), content=r[5])
+            return_list.append(value)
+            print(r)
+        
+        # close the cursor and database connection
+        cursor.close()
+        conn.close()
+        return return_list
+    except Error as err:
+        print('Error message: ' + err.msg)
+
 # Read all posts trim
 def selectAllFromPostTableTrim():
     try:
@@ -139,6 +163,12 @@ def selectFromPostTableByUniqueId(uniqueId:str):
 @app.get("/posts")
 def getPosts():
     result = selectAllFromPostTable()
+    return result
+
+# GET read all posts 
+@app.get("/posts/count/{num}")
+def getPosts(num:int):
+    result = selectTopNFromPostTable(num)
     return result
 
 # GET read all posts 

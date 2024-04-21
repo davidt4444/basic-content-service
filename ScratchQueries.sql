@@ -36,7 +36,7 @@ SELECT id, uniqueId, title, author, date, content FROM Post;
 
 delete from Post where id=987;
 
-
+SELECT id, uniqueId, title, author, date, content FROM Post order by id desc limit 10;
 
 
 /*

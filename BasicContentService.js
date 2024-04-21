@@ -395,6 +395,9 @@ class BasicContentService{
         // JSON result in `data` variable
 
     }
+    static getPosition(string, subString, index) {
+        return string.split(subString, index).join(subString).length;
+    }
     static rss(data){
         var site = "https://www.thenameofyourbrand.com/";
         var base = site+"blog.html";
@@ -461,8 +464,13 @@ class BasicContentService{
             }
             item.appendChild(element);
             
+            var holder = document.createElement("div");
+            holder.innerHTML = data[i].content;
+            var holderInnerText = holder.innerText.substring(0,
+                this.getPosition(holder.innerText, ".", 3))+"";
+            
             element = document.createElement("description");
-            element.appendChild(document.createTextNode(data[i].content));
+            element.appendChild(document.createTextNode(holderInnerText));
             item.appendChild(element);
             
             element = document.createElement("dc:creator");
