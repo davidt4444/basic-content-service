@@ -456,12 +456,7 @@ class BasicContentService{
             item.appendChild(element);
             
             element = document.createElement("title");
-            if(i==0){
-                element.appendChild(document.createTextNode("Introduction: "+data[i].title));
-            }
-            else{
-                element.appendChild(document.createTextNode("Page"+(i)+": "+data[i].title));
-            }
+            element.appendChild(document.createTextNode(data[i].title));
             item.appendChild(element);
             
             var holder = document.createElement("div");
