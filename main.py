@@ -152,7 +152,6 @@ def selectAllFromPostTable():
         for r in result:
             value = BlogPost(id=r[0], uniqueId=r[1], title=r[2], author=r[3], date=r[4].strftime("%m/%d/%Y, %H:%M:%S"), content=r[5])
             return_list.append(value)
-            print(r)
         
         # close the cursor and database connection
         cursor.close()
@@ -176,7 +175,6 @@ def selectTopNFromPostTable(num:int):
         for r in result:
             value = BlogPost(id=r[0], uniqueId=r[1], title=r[2], author=r[3], date=r[4].strftime("%m/%d/%Y, %H:%M:%S"), content=r[5])
             return_list.append(value)
-            print(r)
         
         # close the cursor and database connection
         cursor.close()
@@ -201,7 +199,6 @@ def selectAllFromPostTableTrim():
         for r in result:
             value = BlogPost(id=r[0], uniqueId=r[1], title=r[2], author=r[3], date=r[4].strftime("%m/%d/%Y, %H:%M:%S"), content="")
             return_list.append(value)
-            print(r)
         
         # close the cursor and database connection
         cursor.close()

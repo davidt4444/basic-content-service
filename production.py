@@ -5,13 +5,17 @@ import datetime
 from typing import Union
 from typing import Annotated
 
-from fastapi import FastAPI, Form
+import logging
+import uvicorn
+from fastapi import FastAPI, Form, Header, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from pydantic import BaseModel
 
 from mysql.connector import connect, Error
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', filename='logfile.log', filemode='a')
 
 app = FastAPI()
 
@@ -53,7 +57,6 @@ def selectAllFromPostTable():
         for r in result:
             value = BlogPost(id=r[0], uniqueId=r[1], title=r[2], author=r[3], date=r[4].strftime("%m/%d/%Y, %H:%M:%S"), content=r[5])
             return_list.append(value)
-            print(r)
         
         # close the cursor and database connection
         cursor.close()
@@ -77,7 +80,6 @@ def selectTopNFromPostTable(num:int):
         for r in result:
             value = BlogPost(id=r[0], uniqueId=r[1], title=r[2], author=r[3], date=r[4].strftime("%m/%d/%Y, %H:%M:%S"), content=r[5])
             return_list.append(value)
-            print(r)
         
         # close the cursor and database connection
         cursor.close()
@@ -102,7 +104,6 @@ def selectAllFromPostTableTrim():
         for r in result:
             value = BlogPost(id=r[0], uniqueId=r[1], title=r[2], author=r[3], date=r[4].strftime("%m/%d/%Y, %H:%M:%S"), content="")
             return_list.append(value)
-            print(r)
         
         # close the cursor and database connection
         cursor.close()
@@ -159,27 +160,37 @@ def selectFromPostTableByUniqueId(uniqueId:str):
     except Error as err:
         print('Error message: ' + err.msg)
 
+def setLog(status:str, request:Request):
+    url = str(request.url)
+    base = str(request.base_url)
+    path = "/"+url.replace(base, "")
+    logging.info("{host}:{port} - \"{method} {path} {type}\" {status} <UserAgent>={userAgent}".format(host=request.client.host,port=request.client.port, method=request.method, path=path, type=str(request.scope['type']).upper()+"/"+request.scope['http_version'], status=status, userAgent=request.headers['user-agent']))
+
 # GET read all posts 
 @app.get("/posts")
-def getPosts():
+def getPosts(request:Request):
+    setLog("200", request)
     result = selectAllFromPostTable()
     return result
 
 # GET read all posts 
 @app.get("/posts/count/{num}")
-def getPosts(num:int):
+def getPosts(num:int, request:Request):
+    setLog("200", request)
     result = selectTopNFromPostTable(num)
     return result
 
 # GET read all posts 
 @app.get("/posts/trim")
-def getPostsTrim():
+def getPostsTrim(request:Request):
+    setLog("200", request)
     result = selectAllFromPostTableTrim()
     return result
 
 # GET read a post by title 
 @app.get("/post/title/{title}")
-def getPostByTitle(title:str):
+def getPostByTitle(title:str, request:Request):
+    setLog("200", request)
     result = selectFromPostTableByTitle(title)
     for r in result:
         return r
@@ -188,10 +199,41 @@ def getPostByTitle(title:str):
 
 # GET read a post by uniqueId
 @app.get("/post/{uniqueId}")
-def getPostByUniqueId(uniqueId:str):
+def getPostByUniqueId(uniqueId:str, request:Request):
+    setLog("200", request)
     result = selectFromPostTableByUniqueId(uniqueId)
     for r in result:
         return r
     
     return {"response":"No result found"}
 
+@app.get("/{rest_of_path:path}")
+def getCatchAll(rest_of_path:str, request:Request):
+    setLog("404 Not Found", request)
+    return {"detail":"Method Not Allowed"}
+
+@app.post("/{rest_of_path:path}")
+def getCatchAll(rest_of_path:str, request:Request):
+    setLog("405 Method Not Allowed", request)
+    return {"detail":"Method Not Allowed"}
+
+@app.delete("/{rest_of_path:path}")
+def getCatchAll(rest_of_path:str, request:Request):
+    setLog("405 Method Not Allowed", request)
+    return {"detail":"Method Not Allowed"}
+
+@app.patch("/{rest_of_path:path}")
+def getCatchAll(rest_of_path:str, request:Request):
+    setLog("405 Method Not Allowed", request)
+    return {"detail":"Method Not Allowed"}
+
+@app.put("/{rest_of_path:path}")
+def getCatchAll(rest_of_path:str, request:Request):
+    setLog("405 Method Not Allowed", request)
+    return {"detail":"Method Not Allowed"}
+
+if __name__ == "__main__":
+    # uvicorn.run("production:app", host="127.0.0.1", port=8080, log_level="info")
+    # uvicorn.run("production:app", host="127.0.0.1", port=8080, log_level="info", ssl_keyfile="./localhost+3-key.pem", ssl_certfile='./localhost+3.pem')
+    uvicorn.run("production:app", host="0.0.0.0", port=8080, log_level="info", ssl_keyfile="./privkey.pem", ssl_certfile='./fullchain.pem')
+    
