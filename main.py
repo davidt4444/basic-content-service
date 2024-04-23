@@ -390,7 +390,7 @@ def test():
     results = getPosts()
     for r in results:
         print(r.id," - ",r.title)
-    result = getPost("blah")
+    result = getPostByTitle("blah")
     print(result.id," - ",result.title)
     id = insertIntoPostTable(result)
     print("row ", id, " was inserted")

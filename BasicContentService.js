@@ -495,4 +495,10 @@ class BasicContentService{
         document.getElementById("feed").appendChild(pre);
         
     }
+    static checkin(server){
+        $.ajax({
+            url: server+'/'+encodeURIComponent(window.location.href),
+            type: 'GET'
+        });
+    }
 }
