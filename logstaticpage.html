@@ -3,8 +3,9 @@
 <div id="feed" class="feed" ></div>
 <script>
     
-    $.getJSON(server+'/posts/count/20', function(ret) {
-        BasicContentService.rss(ret);
-        console.log(ret);
-    });
+    if(typeof BasicContentService==='undefined'){}
+    else{
+        var server = 'http://127.0.0.1:8080';
+        BasicContentService.checkin(server);
+    }
 </script>

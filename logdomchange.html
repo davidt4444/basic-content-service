@@ -1,0 +1,97 @@
+<div id="content">
+  <p>I do not recommend firing a logging event every time that an element is created or destroyed for a content feed service. You mainly do this for gated admin areas. However, the stuff at the bottom of the page starting with the Add Item button is an example of how to do it. Unless you are providing access to data of high value, I would just monitor traffic data for frequency of requests. 4,000 GET requests in a day seems like a reasonable start. Otherwise, you have to listen to a lot of noise to catch where someone might hide a cache in the dom.</p>
+  <p>Other options would include using mutation observers to find changes to the dom and fix those changes. An example for attributes from <a href="https://stackoverflow.com/questions/27221604/is-it-possible-to-make-html-element-attributes-immutable">https://stackoverflow.com/questions/27221604/is-it-possible-to-make-html-element-attributes-immutable</a> is in the pre tag below.</p>
+  <pre>
+    new MutationObserver(callback)
+    .observe(elem, {attributes: true, attributeOldValue: true});
+
+    function callback(mutations, observer) {
+        var target = mutations[0].target;
+        observer.disconnect();
+        mutations.forEach(function(mutation) {
+            target.setAttribute(mutation.attributeName, mutation.oldValue);
+        });
+        observer.observe(target, {attributes: true, attributeOldValue: true});
+    }
+  </pre>
+  <p>Notice that it disconnects the mutation observer. If someone is adding a different element to the site for the cache, they are probably also going to be smart enough to disconnect the mutation observer from the element that they are adding. So, the different cache element may only appear once in the log output in the logging of all mutations instance.</p>
+</div>
+
+<!-- 
+  Modified from, https://stackoverflow.com/questions/3219758/detect-changes-in-the-dom 
+-->
+
+<button>Add Item</button>
+<div id="whole">
+  The whole div is being monitored.
+  <ol>
+    This ordered list is in it.
+  <li><button>list item (click to delete)</button></li>
+  <li><button>list item (click to delete)</button></li>
+  <li><button>list item (click to delete)</button></li>
+  <li><button>list item (click to delete)</button></li>
+  <li><em>&hellip;More will be added after 3 seconds&hellip;</em></li>
+</ol>
+</div>
+
+<script>
+var observeDOM = (function(){
+  var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+  return function( obj, callback ){
+    if( !obj || obj.nodeType !== 1 ) return; 
+
+    if( MutationObserver ){
+      // define a new observer
+      var mutationObserver = new MutationObserver(callback)
+
+      // have the observer observe for changes in children
+      mutationObserver.observe( obj, { childList:true, subtree:true })
+      return mutationObserver
+    }
+    
+    // browser support fallback
+    else if( window.addEventListener ){
+      obj.addEventListener('DOMNodeInserted', callback, false)
+      obj.addEventListener('DOMNodeRemoved', callback, false)
+    }
+  }
+})()
+
+
+//------------< DEMO BELOW >----------------
+
+// add item
+var itemHTML = "<li id='stuff'><button>list item (click to delete)</button></li>",
+    listElm = document.querySelector('ol'),
+    whole=document.getElementById("whole");
+
+document.querySelector('body > button').onclick = function(e){
+  listElm.insertAdjacentHTML("beforeend", itemHTML);
+}
+
+// delete item
+listElm.onclick = function(e){
+  if( e.target.nodeName == "BUTTON" )
+    e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+}
+    
+// Observe a specific DOM element:
+observeDOM( whole, function(m){ 
+   var addedNodes = [], removedNodes = [];
+
+   m.forEach(record => record.addedNodes.length & addedNodes.push(...record.addedNodes))
+   
+   m.forEach(record => record.removedNodes.length & removedNodes.push(...record.removedNodes))
+
+//   console.clear();
+  console.log('Added:', addedNodes, 'Removed:', removedNodes);
+});
+
+
+// Insert 3 DOM nodes at once after 3 seconds
+setTimeout(function(){
+   listElm.removeChild(listElm.lastElementChild);
+   listElm.insertAdjacentHTML("beforeend", Array(4).join(itemHTML));
+}, 3000);    
+</script>
