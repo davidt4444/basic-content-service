@@ -161,6 +161,9 @@ To run it in the background run:
 screen -d -m -s "basic-content-service" python3 -m uvicorn production:app --port 8080 --ssl-keyfile=./privkey.pem --ssl-certfile=./fullchain.pem --host 0.0.0.0 --log-config ./log.ini
 </p>
 <p>
+screen -d -m -s "basic-content-service" python3 production.py
+</p>
+<p>
 To reattach and manage the screen run:<br />
 screen -R<br />
 </p>

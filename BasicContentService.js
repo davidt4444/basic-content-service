@@ -1,4 +1,5 @@
 class BasicContentService{
+    static page_cache = '';
     admin=false;
     currentPage=0;
     data = [];
@@ -496,9 +497,13 @@ class BasicContentService{
         
     }
     static checkin(server){
-        $.ajax({
-            url: server+'/'+encodeURIComponent(window.location.href),
-            type: 'GET'
-        });
+        if(BasicContentService.page_cache==encodeURIComponent(window.location.href)){}
+        else{
+            BasicContentService.page_cache=encodeURIComponent(window.location.href);
+            $.ajax({
+                url: server+'/'+encodeURIComponent(window.location.href),
+                type: 'GET'
+            });
+        }
     }
 }
