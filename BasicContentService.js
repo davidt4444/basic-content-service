@@ -497,11 +497,12 @@ class BasicContentService{
         
     }
     static checkin(server){
-        if(BasicContentService.page_cache==encodeURIComponent(window.location.href)){}
+        var insert = encodeURIComponent(window.location.href+" "+navigator.languages.toString())
+        if(BasicContentService.page_cache==insert){}
         else{
-            BasicContentService.page_cache=encodeURIComponent(window.location.href);
+            BasicContentService.page_cache=insert;
             $.ajax({
-                url: server+'/'+encodeURIComponent(window.location.href),
+                url: server+'/'+insert,
                 type: 'GET'
             });
         }
