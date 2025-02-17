@@ -76,14 +76,20 @@ class BasicContentService{
         }
 
     }
-    updatePage(postId,postUniqueId,postTitle,postAuthor,postDate,postContent){
+    updatePage(postId,postUniqueId,postTitle,postAuthor,postCreatedAt,postContent){
         var payload={
             id: postId,
             uniqueId: postUniqueId,
             title: postTitle,
             author: postAuthor,
-            date: postDate,
-            content: postContent
+            createdAt: postCreatedAt,
+            content: postContent,
+            category:"",
+            updatedAt:"",
+            likesCount:0,
+            authorId:0,
+            isPublished:true,
+            views:true
         }
         console.log(payload);
         $.ajax({
@@ -100,14 +106,20 @@ class BasicContentService{
         });
 
     }
-    insertPage(postId,postUniqueId,postTitle,postAuthor,postDate,postContent){
+    insertPage(postId,postUniqueId,postTitle,postAuthor,postCreatedAt,postContent){
         var payload={
             id: postId,
             uniqueId: postUniqueId,
             title: postTitle,
             author: postAuthor,
-            date: postDate,
-            content: postContent
+            createdAt: postCreatedAt,
+            content: postContent,
+            category:"",
+            updatedAt:"",
+            likesCount:0,
+            authorId:0,
+            isPublished:true,
+            views:true
         }
         console.log(payload);
         $.ajax({
@@ -211,7 +223,7 @@ class BasicContentService{
             holder = document.createElement("li");
             holder.setAttribute("class", "postListViewEntry");
             holder.setAttribute("id", "postListViewEntry");
-            holder.appendChild(document.createTextNode("Date: "+ret.date));
+            holder.appendChild(document.createTextNode("Date: "+ret.createdAt));
             container.appendChild(holder);
             
             holder = document.createElement("li");
@@ -244,7 +256,7 @@ class BasicContentService{
             ret.uniqueId+"\","+
             "document.getElementById(\"pageTitle\").value,"+
             "document.getElementById(\"pageAuthor\").value,\""+
-            ret.date+"\","+
+            ret.createdAt+"\","+
             "document.getElementById(\"pageContent\").value"+
             ")");
             holder.appendChild(input);
@@ -283,7 +295,7 @@ class BasicContentService{
             holder = document.createElement("div");
             holder.setAttribute("class", "postDate");
             holder.setAttribute("id", "postDate");
-            holder.appendChild(document.createTextNode("Date: "+this.data[this.currentPage].date));
+            holder.appendChild(document.createTextNode("Date: "+this.data[this.currentPage].createdAt));
             document.getElementById("result_title").appendChild(holder);
             
             $.getJSON(this.server+'/post/'+this.data[this.currentPage].uniqueId, function(ret) {
@@ -361,7 +373,7 @@ class BasicContentService{
             // holder = document.createElement("li");
             // holder.setAttribute("class", "postListViewEntry");
             // holder.setAttribute("id", "postListViewEntry");
-            // holder.appendChild(document.createTextNode("Date: "+this.data[i].date));
+            // holder.appendChild(document.createTextNode("Date: "+this.data[i].createdAt));
             // container.appendChild(holder);
             // item.appendChild(container);
             
@@ -478,7 +490,7 @@ class BasicContentService{
             item.appendChild(element);
             
             element = document.createElementNS("http://search.yahoo.com/mrss/", "pubDate");
-            element.appendChild(document.createTextNode(data[i].date));
+            element.appendChild(document.createTextNode(data[i].createdAt));
             item.appendChild(element);
             
             collection.appendChild(item);

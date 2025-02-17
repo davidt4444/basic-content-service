@@ -66,6 +66,33 @@ cc309516-cf5b-11ee-8573-f3e6a68ccc5c
 cac71146-cf5b-11ee-8573-f3e6a68ccc5c
 ccbf8938-cf5b-11ee-8573-f3e6a68ccc5c
 
-
+CREATE TABLE JPost (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    uniqueId CHAR(36) NOT NULL DEFAULT (UUID()),
+    title VARCHAR(200) NOT NULL,
+    content TEXT NOT NULL,
+    createdAt DATETIME NOT NULL,
+    author VARCHAR(200),
+    category VARCHAR(100),
+    updatedAt DATETIME,
+    likesCount INTEGER NOT NULL,
+    authorId INTEGER,
+    isPublished BOOLEAN NOT NULL,
+    views INTEGER NOT NULL
+);
+select     id,
+    uniqueId,
+    title,
+    content,
+    createdAt,
+    author,
+    category,
+    updatedAt,
+    likesCount,
+    authorId,
+    isPublished,
+    views
+    from JPost
+;
 
 

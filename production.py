@@ -24,8 +24,15 @@ class BlogPost(BaseModel):
     uniqueId:str
     title:str
     author:str
-    date:str
+    createdAt:str
     content:str
+    
+    category:str
+    updatedAt:str
+    likesCount:int
+    authorId:int
+    isPublished:bool
+    views:int
 
 cnf_filepath="../aws-resources/localhost.cnf"
 # cnf_filepath="../aws-resources/thenameofyourbrand.cnf"
@@ -49,13 +56,69 @@ def selectAllFromPostTable():
         
         # open cursor, define and run query, fetch results
         cursor = conn.cursor()
-        query = 'SELECT id, uniqueId, title, author, date, content FROM Post;'
+        query = 'select \
+            id,\
+            uniqueId,\
+            title,\
+            content,\
+            createdAt,\
+            author,\
+            category,\
+            updatedAt,\
+            likesCount,\
+            authorId,\
+            isPublished,\
+            views\
+            from JPost\
+        ;'
         cursor.execute(query)
         result = cursor.fetchall()
         
         return_list = []
         for r in result:
-            value = BlogPost(id=r[0], uniqueId=r[1], title=r[2], author=r[3], date=r[4].strftime("%m/%d/%Y, %H:%M:%S"), content=r[5])
+            if r[4]==None:
+                createdAt =""
+            else:
+                createdAt =r[4].strftime("%m/%d/%Y, %H:%M:%S")
+            if r[6]==None:
+                category =""
+            else:
+                category =r[6]
+            if r[7]==None:
+                updatedAt =""
+            else:
+                updatedAt =r[7].strftime("%m/%d/%Y, %H:%M:%S")
+            if r[8]==None:
+                likesCount =0
+            else:
+                likesCount =r[8]
+            if r[9]==None:
+                authorId =0
+            else:
+                authorId =r[9]
+            if r[10]==None:
+                isPublished =False
+            else:
+                isPublished =r[10]
+            if r[11]==None:
+                views =0
+            else:
+                views =r[11]
+
+            value = BlogPost(
+            id=r[0],
+            uniqueId=r[1],
+            title=r[2],
+            content=r[3],
+            createdAt=createdAt,
+            author=r[5],
+            category=category,
+            updatedAt=updatedAt,
+            likesCount=likesCount,
+            authorId=authorId,
+            isPublished=isPublished,
+            views=views
+            )
             return_list.append(value)
         
         # close the cursor and database connection
@@ -72,13 +135,70 @@ def selectTopNFromPostTable(num:int):
         
         # open cursor, define and run query, fetch results
         cursor = conn.cursor()
-        query = 'SELECT id, uniqueId, title, author, date, content FROM Post order by id desc limit %s;'
+        query = 'select \
+            id,\
+            uniqueId,\
+            title,\
+            content,\
+            createdAt,\
+            author,\
+            category,\
+            updatedAt,\
+            likesCount,\
+            authorId,\
+            isPublished,\
+            views\
+            from JPost\
+            order by id desc limit %s;\
+         ;'
         cursor.execute(query, (num,))
         result = cursor.fetchall()
         
         return_list = []
         for r in result:
-            value = BlogPost(id=r[0], uniqueId=r[1], title=r[2], author=r[3], date=r[4].strftime("%m/%d/%Y, %H:%M:%S"), content=r[5])
+            if r[4]==None:
+                createdAt =""
+            else:
+                createdAt =r[4].strftime("%m/%d/%Y, %H:%M:%S")
+            if r[6]==None:
+                category =""
+            else:
+                category =r[6]
+            if r[7]==None:
+                updatedAt =""
+            else:
+                updatedAt =r[7].strftime("%m/%d/%Y, %H:%M:%S")
+            if r[8]==None:
+                likesCount =0
+            else:
+                likesCount =r[8]
+            if r[9]==None:
+                authorId =0
+            else:
+                authorId =r[9]
+            if r[10]==None:
+                isPubliihed =False
+            else:
+                isPublished =r[10]
+            if r[11]==None:
+                views =0
+            else:
+                views =r[11]
+
+            value = BlogPost(
+            id=r[0],
+            uniqueId=r[1],
+            title=r[2],
+            content=r[3],
+            createdAt=createdAt,
+            author=r[5],
+            category=category,
+            updatedAt=updatedAt,
+            likesCount=likesCount,
+            authorId=authorId,
+            isPublished=isPublished,
+            views=views
+            )
             return_list.append(value)
         
         # close the cursor and database connection
@@ -96,13 +216,69 @@ def selectAllFromPostTableTrim():
         
         # open cursor, define and run query, fetch results
         cursor = conn.cursor()
-        query = 'SELECT id, uniqueId, title, author, date FROM Post;'
+        query = 'select \
+            id,\
+            uniqueId,\
+            title,\
+            content,\
+            createdAt,\
+            author,\
+            category,\
+            updatedAt,\
+            likesCount,\
+            authorId,\
+            isPublished,\
+            views\
+            from JPost\
+        ;'
         cursor.execute(query)
         result = cursor.fetchall()
         
         return_list = []
         for r in result:
-            value = BlogPost(id=r[0], uniqueId=r[1], title=r[2], author=r[3], date=r[4].strftime("%m/%d/%Y, %H:%M:%S"), content="")
+            if r[4]==None:
+                createdAt =""
+            else:
+                createdAt =r[4].strftime("%m/%d/%Y, %H:%M:%S")
+            if r[6]==None:
+                category =""
+            else:
+                category =r[6]
+            if r[7]==None:
+                updatedAt =""
+            else:
+                updatedAt =r[7].strftime("%m/%d/%Y, %H:%M:%S")
+            if r[8]==None:
+                likesCount =0
+            else:
+                likesCount =r[8]
+            if r[9]==None:
+                authorId =0
+            else:
+                authorId =r[9]
+            if r[10]==None:
+                isPublished =False
+            else:
+                isPublished =r[10]
+            if r[11]==None:
+                views =0
+            else:
+                views =r[11]
+
+            value = BlogPost(
+            id=r[0],
+            uniqueId=r[1],
+            title=r[2],
+            content="",
+            createdAt=createdAt,
+            author=r[5],
+            category=category,
+            updatedAt=updatedAt,
+            likesCount=likesCount,
+            authorId=authorId,
+            isPublished=isPublished,
+            views=views
+            )
             return_list.append(value)
         
         # close the cursor and database connection
@@ -120,13 +296,70 @@ def selectFromPostTableByTitle(title:str):
         
         # open cursor, define and run query, fetch results
         cursor = conn.cursor()
-        query = 'SELECT id, uniqueId, title, author, date, content FROM Post where title=%s;'
+        query = 'select \
+            id,\
+            uniqueId,\
+            title,\
+            content,\
+            createdAt,\
+            author,\
+            category,\
+            updatedAt,\
+            likesCount,\
+            authorId,\
+            isPublished,\
+            views\
+            from JPost\
+            where title=%s;\
+        ;'
         cursor.execute(query, (title,))
         result = cursor.fetchall()
         
         return_list = []
         for r in result:
-            value = BlogPost(id=r[0], uniqueId=r[1], title=r[2], author=r[3], date=r[4].strftime("%m/%d/%Y, %H:%M:%S"), content=r[5])
+            if r[4]==None:
+                createdAt =""
+            else:
+                createdAt =r[4].strftime("%m/%d/%Y, %H:%M:%S")
+            if r[6]==None:
+                category =""
+            else:
+                category =r[6]
+            if r[7]==None:
+                updatedAt =""
+            else:
+                updatedAt =r[7].strftime("%m/%d/%Y, %H:%M:%S")
+            if r[8]==None:
+                likesCount =0
+            else:
+                likesCount =r[8]
+            if r[9]==None:
+                authorId =0
+            else:
+                authorId =r[9]
+            if r[10]==None:
+                isPublished =False
+            else:
+                isPublished =r[10]
+            if r[11]==None:
+                views =0
+            else:
+                views =r[11]
+
+            value = BlogPost(
+            id=r[0],
+            uniqueId=r[1],
+            title=r[2],
+            content=r[3],
+            createdAt=createdAt,
+            author=r[5],
+            category=category,
+            updatedAt=updatedAt,
+            likesCount=likesCount,
+            authorId=authorId,
+            isPublished=isPublished,
+            views=views
+            )
             return_list.append(value)
         
         # close the cursor and database connection
@@ -144,13 +377,70 @@ def selectFromPostTableByUniqueId(uniqueId:str):
         
         # open cursor, define and run query, fetch results
         cursor = conn.cursor()
-        query = 'SELECT id, uniqueId, title, author, date, content FROM Post where uniqueId=%s;'
+        query = 'select \
+            id,\
+            uniqueId,\
+            title,\
+            content,\
+            createdAt,\
+            author,\
+            category,\
+            updatedAt,\
+            likesCount,\
+            authorId,\
+            isPublished,\
+            views\
+            from JPost\
+             where uniqueId=%s;\
+        ;'
         cursor.execute(query, (uniqueId,))
         result = cursor.fetchall()
         
         return_list = []
         for r in result:
-            value = BlogPost(id=r[0], uniqueId=r[1], title=r[2], author=r[3], date=r[4].strftime("%m/%d/%Y, %H:%M:%S"), content=r[5])
+            if r[4]==None:
+                createdAt =""
+            else:
+                createdAt =r[4].strftime("%m/%d/%Y, %H:%M:%S")
+            if r[6]==None:
+                category =""
+            else:
+                category =r[6]
+            if r[7]==None:
+                updatedAt =""
+            else:
+                updatedAt =r[7].strftime("%m/%d/%Y, %H:%M:%S")
+            if r[8]==None:
+                likesCount =0
+            else:
+                likesCount =r[8]
+            if r[9]==None:
+                authorId =0
+            else:
+                authorId =r[9]
+            if r[10]==None:
+                isPublished =False
+            else:
+                isPublished =r[10]
+            if r[11]==None:
+                views =0
+            else:
+                views =r[11]
+
+            value = BlogPost(
+            id=r[0],
+            uniqueId=r[1],
+            title=r[2],
+            content=r[3],
+            createdAt=createdAt,
+            author=r[5],
+            category=category,
+            updatedAt=updatedAt,
+            likesCount=likesCount,
+            authorId=authorId,
+            isPublished=isPublished,
+            views=views
+            )
             return_list.append(value)
         
         # close the cursor and database connection
